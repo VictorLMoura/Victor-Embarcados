@@ -5,6 +5,8 @@
  **
  **  - https://www.youtube.com/watch?v=nBB7KFQagPM
  **/
+// refs: tetris theme song: http://www.jk-quantized.com/blog/2015/11/09/tetris-theme-song-using-processing
+// refs: pirates of the caribbean theme song: https://github.com/xitangg/-Pirates-of-the-Caribbean-Theme-Song/blob/master/Pirates_of_the_Caribbean_-_Theme_Song.ino
 
 #include <asf.h>
 
