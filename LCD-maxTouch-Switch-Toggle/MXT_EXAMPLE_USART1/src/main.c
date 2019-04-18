@@ -302,21 +302,18 @@ void draw_button() { //Primeira tela do display
 	if (status_ciclo->bubblesOn == 1){sprintf(buff, "Bubbles: ON");}
 	else if (status_ciclo->bubblesOn == 0){sprintf(buff, "Bubbles: OFF");}
 	ili9488_draw_string(15, BUTTON_Y+BUTTON_BORDER+100+17+17+17+17+17, buff);	
-	
 
+	// ---------- LOCK SCREEEN ------------//
 	char stringLCD[32];
-	
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_TOMATO));
 	ili9488_draw_filled_rectangle(190,20,295,45);
-
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 	if (lock_screen == 0){sprintf(stringLCD, "Lock screen: ON/(OFF)");}
 	else if (lock_screen == 1){sprintf(stringLCD, "Lock screen: (ON)/OFF");}
 	ili9488_draw_string(40, 25, stringLCD);
-	
 	sprintf(stringLCD, "___________________________");
 	ili9488_draw_string(0, 45, stringLCD);
-	
+	// ---------- LOCK SCREEEN ------------//
 	
 	/***		Desenhando ícone			***/
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
@@ -332,44 +329,85 @@ void draw_button() { //Primeira tela do display
 void draw_button2() { //segunda tela do display
 	tela = 2;
 	
+	// ---------- LOCK SCREEEN ------------//
+	char stringLCD[32];
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_TOMATO));
-	ili9488_draw_filled_rectangle(70,20,250,60);
+	ili9488_draw_filled_rectangle(190,20,295,45);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
+	if (lock_screen == 0){sprintf(stringLCD, "Lock screen: ON/(OFF)");}
+	else if (lock_screen == 1){sprintf(stringLCD, "Lock screen: (ON)/OFF");}
+	ili9488_draw_string(40, 25, stringLCD);
+	sprintf(stringLCD, "___________________________");
+	ili9488_draw_string(0, 45, stringLCD);
+	// ---------- LOCK SCREEEN ------------//
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_TOMATO));
+	ili9488_draw_filled_rectangle(70,180,250,220);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_GREENYELLOW));
+	ili9488_draw_filled_rectangle(70,120,250,160);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 	
+	if(porta_aberta == 0){
+		sprintf(stringLCD, "Abrir a porta");
+		ili9488_draw_string(85, 140, stringLCD);
+	}
+	else if(porta_aberta == 1){
+		sprintf(stringLCD, "Fechar a porta");
+		ili9488_draw_string(80, 140, stringLCD);
+	}
+
 	char buff3[32];
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 	if (start == 0){ //caso em que a lavagem ainda nao começou
 		sprintf(buff3, "-- START --");
-		ili9488_draw_string(95, 40, buff3);
+		ili9488_draw_string(95, 200, buff3);
 		sprintf(buff3, "Esperando para comecar");
-		ili9488_draw_string(35, 75, buff3);
-	 
-		sprintf(buff3, "___________________________");
-		ili9488_draw_string(0, 100, buff3);
+		ili9488_draw_string(35, 275, buff3);
 		
 		if (porta_aberta == 1){
-			//inserir ícone de perigo
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_RED));
 			sprintf(buff3, "PORTA ABERTA !");
-			ili9488_draw_string(90, 240, buff3);	
-			sprintf(buff3, "Feche a porta para prosseguir");
-			ili9488_draw_string(90, 240, buff3);
+			ili9488_draw_string(80, 310, buff3);	
+			sprintf(buff3, "Feche para prosseguir");
+			ili9488_draw_string(40, 340, buff3);
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 		}		
 	}
 	else if (start == 1){ //caso em que a lavagem ja começou
 		sprintf(buff3, "-- STOP --");
-		ili9488_draw_string(95, 40, buff3);
+		ili9488_draw_string(100, 200, buff3);
 		sprintf(buff3, "Lavagem em progresso");
-		ili9488_draw_string(35, 75, buff3);
+		ili9488_draw_string(35, 275, buff3);
 		if (porta_aberta == 1){
-			//inserir ícone de perigo
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_RED));
 			sprintf(buff3, "PORTA TRANCADA !");
-			ili9488_draw_string(90, 240, buff3);
+			ili9488_draw_string(70, 310, buff3);
 			sprintf(buff3, "Pare a lavagem para abrir");
-			ili9488_draw_string(90, 240, buff3);
+			ili9488_draw_string(10, 340, buff3);
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 		}
 		int tempo_restante = (status_ciclo->centrifugacaoTempo+status_ciclo->enxagueTempo)-minuto;
 		sprintf(buff3, "%s %d", "Tempo restante:",tempo_restante);
-		ili9488_draw_string(45, 240, buff3);
+		ili9488_draw_string(45, 395, buff3);
 	}
+}
+
+void printa_tempo_restante(){
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
+	ili9488_draw_filled_rectangle(210,370,400,500);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
+	char buff5[32];
+	int tempo_restante = (status_ciclo->centrifugacaoTempo+status_ciclo->enxagueTempo)-minuto;
+	sprintf(buff5, "%s %d", "Tempo restante:",tempo_restante);
+	ili9488_draw_string(45, 395, buff5);	
+}
+
+void printa_fim(){
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
+	ili9488_draw_filled_rectangle(210,370,400,500);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
+	char buff5[32];
+	sprintf(buff5, "%s %d", "FIM");
+	ili9488_draw_string(150, 395, buff5);
 }
 
 uint32_t convert_axis_system_x(uint32_t touch_y) {
@@ -390,7 +428,6 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 			if(tx >= 90 && tx <= 265) { //Caso clique no botao se selecionar o ciclo
 				if(ty >= 206 && ty <= 275) { 
 					draw_screen();
-					start = 1; //apenas para teste agr
 					draw_button2();
 				}
 			}
@@ -414,13 +451,46 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 		if(tx >= 180 && tx <= 295) { //Caso clique no botao, bloquear a tela
 			if(ty >= 0 && ty <= 30) {
 				if(lock_screen == 1)lock_screen = 0;
-				else if(lock_screen ==0) lock_screen = 1;
+				else if(lock_screen == 0) lock_screen = 1;
 				draw_button();
 			}
 		}		 
 	 }
-	if(tela == 2){
-		
+	 
+	if(tela == 2){	
+		if(lock_screen == 0){
+			if(tx >= 70 && tx <= 275) { //Caso clique no botao, parar a lavagem ou começar
+				if(ty >= 170 && ty <= 230) {
+					if(start == 0){
+						start = 1;
+						TC_init(TC0, ID_TC0, 0, 1); //para contar a cada segundo
+						printa_tempo_restante();
+					}
+					else if(start == 1){
+						start = 0;
+						tc_stop(TC0, 0);
+					}
+					draw_screen();
+					draw_button2();
+				}
+			}
+			if(tx >= 70 && tx <= 275) { //Caso clique no botao, parar a lavagem ou começar
+				if(ty >= 100 && ty <= 160) {
+					if(porta_aberta == 0)porta_aberta = 1;
+					else if(porta_aberta == 1) porta_aberta = 0;
+					draw_screen();
+					draw_button2();
+				}
+			}
+			
+		}
+		if(tx >= 180 && tx <= 295) { //Caso clique no botao, bloquear a tela
+			if(ty >= 0 && ty <= 30) {
+				if(lock_screen == 1)lock_screen = 0;
+				else if(lock_screen == 0) lock_screen = 1;
+				draw_button2();
+			}
+		}
 	}
 }
 
@@ -518,11 +588,18 @@ void TC0_Handler(void){
 	UNUSED(ul_dummy);
 	
 	tempo+=1; //em segundos
-	if (tempo == 60){
+	if (tempo == 1){
 		minuto += 1;
 		tempo = 0;
+		printa_tempo_restante();
+	}
+	if (((status_ciclo->centrifugacaoTempo+status_ciclo->enxagueTempo)-minuto) <= 0){
+		start = 0;
+		minuto = 0;
+		tempo = 0;
 		draw_screen();
-		draw_button2();
+		printa_fim();
+		tc_stop(TC0, 0);
 	}
 }
 
@@ -600,13 +677,6 @@ int main(void)
 		}
 		if (mxt_is_message_pending(&device)){ 
 					mxt_debouce(&device);
-		}
-		if(start = 1){
-			/** Configura timer TC0, canal 1 */
-			TC_init(TC0, ID_TC0, 0, 1/4); //para contar a cada segundo
-		}
-		else{
-			tc_stop(TC0, ID_TC0);
 		}
 	} 
 
