@@ -403,11 +403,11 @@ void printa_tempo_restante(){
 
 void printa_fim(){
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
-	ili9488_draw_filled_rectangle(210,370,400,500);
-	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
+	ili9488_draw_filled_rectangle(0,310,320,480);
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_TOMATO));
 	char buff5[32];
-	sprintf(buff5, "%s %d", "FIM");
-	ili9488_draw_string(150, 395, buff5);
+	sprintf(buff5, "FIM");
+	ili9488_draw_string(140, 395, buff5);
 }
 
 uint32_t convert_axis_system_x(uint32_t touch_y) {
@@ -461,7 +461,7 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 		if(lock_screen == 0){
 			if(tx >= 70 && tx <= 275) { //Caso clique no botao, parar a lavagem ou começar
 				if(ty >= 170 && ty <= 230) {
-					if(start == 0){
+					if((start == 0) && (porta_aberta == 0)){
 						start = 1;
 						TC_init(TC0, ID_TC0, 0, 1); //para contar a cada segundo
 						printa_tempo_restante();
@@ -474,7 +474,7 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 					draw_button2();
 				}
 			}
-			if(tx >= 70 && tx <= 275) { //Caso clique no botao, parar a lavagem ou começar
+			if(tx >= 70 && tx <= 275) { //Caso clique no botao, abrir/fechar a porta
 				if(ty >= 100 && ty <= 160) {
 					if(porta_aberta == 0)porta_aberta = 1;
 					else if(porta_aberta == 1) porta_aberta = 0;
@@ -597,7 +597,7 @@ void TC0_Handler(void){
 		start = 0;
 		minuto = 0;
 		tempo = 0;
-		draw_screen();
+		//draw_screen();
 		printa_fim();
 		tc_stop(TC0, 0);
 	}
