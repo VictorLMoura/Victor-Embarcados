@@ -106,12 +106,21 @@ typedef struct {
 	uint8_t dataSize;
 } tImage;
 #include "icones/lavagens.h"
-#include "icones/back.h"
+#include "icones/rapida.h"
+#include "icones/pesado.h"
+#include "icones/enxague.h"
+#include "icones/centrifuga.h"
+
+
 
 void TC_init(Tc * TC, int ID_TC, int TC_CHANNEL, int freq);
 
-const tImage lavagem = { image_data_lavagens, 93, 93,  8 };
-const tImage back_arrow = { image_data_back, 93, 93,  8 };
+const tImage i_lavagem = { image_data_lavagens, 93, 93,  8 };
+const tImage i_rapida = { image_data_rapida, 93, 93,  8 };
+const tImage i_pesado = { image_data_pesado, 93, 93,  8 };
+const tImage i_enxague = { image_data_enxague, 93, 93,  8 };
+const tImage i_centrifuga = { image_data_centrifuga, 93, 93,  8 };
+
 
 
 volatile t_ciclo *status_ciclo;
@@ -316,9 +325,15 @@ void draw_button() { //Primeira tela do display
 	// ---------- LOCK SCREEEN ------------//
 	
 	/***		Desenhando ícone			***/
+	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
+	ili9488_draw_filled_rectangle(0,80,99,200);
 	ili9488_set_foreground_color(COLOR_CONVERT(COLOR_BLACK));
 	// desenha imagem lavagem na posicao X=80 e Y=150
-	ili9488_draw_pixmap(0, 90, lavagem.width, lavagem.height, lavagem.data);
+	if((status_ciclo->enxagueTempo == 15) && (status_ciclo->enxagueQnt == 2))  ili9488_draw_pixmap(0, 90, lavagens.width, lavagens.height, lavagens.data);
+	else if((status_ciclo->enxagueTempo == 10) && (status_ciclo->enxagueQnt == 3)) ili9488_draw_pixmap(0, 90, pesado.width, pesado.height, pesado.data);
+	else if((status_ciclo->enxagueTempo == 10) && (status_ciclo->enxagueQnt == 1)) ili9488_draw_pixmap(0, 90, enxague.width, enxague.height, enxague.data);
+	else if((status_ciclo->enxagueTempo == 0) && (status_ciclo->enxagueQnt == 0)) ili9488_draw_pixmap(0, 90, centrifuga.width, centrifuga.height, centrifuga.data);
+	else if((status_ciclo->enxagueTempo == 5) && (status_ciclo->enxagueQnt == 3)) ili9488_draw_pixmap(0, 90, rapida.width, rapida.height, rapida.data);	
 	/***					***/
 	
 	sprintf(stringLCD, "Selecione o ciclo");
